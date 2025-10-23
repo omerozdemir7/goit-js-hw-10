@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snackbar (Promise Bildirimleri)</title>
+    <script type="module" crossorigin src="/goit-js-hw-10/02-snackbar.js"></script>
+    <link rel="modulepreload" crossorigin href="/goit-js-hw-10/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="/goit-js-hw-10/assets/vendor-BbbuE1sJ.js">
+    <link rel="stylesheet" crossorigin href="/goit-js-hw-10/assets/vendor-CZjNVMTf.css">
+    <link rel="stylesheet" crossorigin href="/goit-js-hw-10/assets/02-snackbar-BiBqmp0S.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">✨ Promise Bildirimleri</h1>
+
+      <form class="form">
+        <label for="delay">Bekleme süresi (ms):</label>
+        <input type="number" id="delay" placeholder="örnek: 1000" min="0" />
+
+        <label>
+          <input type="radio" name="state" value="fulfilled" checked />
+          Başarılı (Fulfilled)
+        </label>
+
+        <label>
+          <input type="radio" name="state" value="rejected" />
+          Başarısız (Rejected)
+        </label>
+
+        <button type="submit" id="start-btn">Başlat</button>
+      </form>
+    </div>
+
+  </body>
+</html>
