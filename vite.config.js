@@ -53,5 +53,13 @@ export default defineConfig(({ command }) => {
         sort: 'mobile-first',
       }),
     ],
+
+    // 🔹 Eğer build sırasında hâlâ bulunamaz hatası alırsan
+    resolve: {
+      alias: {
+        flatpickr: 'flatpickr/dist/flatpickr.min.js',
+        izitoast: 'izitoast/dist/js/iziToast.min.js',
+      },
+    },
   };
 });
