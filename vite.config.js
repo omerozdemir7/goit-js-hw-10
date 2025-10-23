@@ -6,6 +6,9 @@ import SortCss from 'postcss-sort-media-queries';
 
 export default defineConfig(({ command }) => {
   return {
+    // 🔹 Base: yayınlandığında dosya yolları düzgün çalışsın
+    base: './goit-js-hw-10/',
+
     define: {
       [command === 'serve' ? 'global' : '_global']: {},
     },
@@ -36,6 +39,12 @@ export default defineConfig(({ command }) => {
       },
       outDir: '../dist',
       emptyOutDir: true,
+    },
+    server: {
+      headers: {
+        // 🔹 CSP gevşetme — flatpickr ve iziToast hata vermesin
+        'Content-Security-Policy': "script-src 'self' 'unsafe-eval';",
+      },
     },
     plugins: [
       injectHTML(),

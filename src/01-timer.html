@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zamanlayıcı</title>
+    <link rel="stylesheet" href="./css/01-timer.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">🕒 Geri Sayım Zamanlayıcı</h1>
+
+      <div class="picker">
+        <input id="datetime-picker" type="text" placeholder="Tarih ve saat seçin" readonly />
+        <button id="start-btn">Başlat</button>
+      </div>
+
+      <div class="timer">
+        <div class="time-box">
+          <span class="value" id="days">00</span>
+          <span class="label">Gün</span>
+        </div>
+        <div class="time-box">
+          <span class="value" id="hours">00</span>
+          <span class="label">Saat</span>
+        </div>
+        <div class="time-box">
+          <span class="value" id="minutes">00</span>
+          <span class="label">Dakika</span>
+        </div>
+        <div class="time-box">
+          <span class="value" id="seconds">00</span>
+          <span class="label">Saniye</span>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/01-timer.js"></script>
+  </body>
+</html>
