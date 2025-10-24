@@ -1,89 +1,93 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
+// ✅ Bildirim fonksiyonu
+function showToast(type, message) {
+  const options = {
+    title: type === "warning" ? "Uyarı ⚠️" : "Bilgi ℹ️",
+    message,
+    position: "topRight",
+    timeout: 3000,
+  };
+  if (type === "success") iziToast.success(options);
+  else if (type === "error") iziToast.error(options);
+  else iziToast.warning(options);
+}
 
+const startBtn = document.querySelector("[data-start]");
+const datePicker = document.getElementById("datetime-picker");
+const daysEl = document.querySelector("[data-days]");
+const hoursEl = document.querySelector("[data-hours]");
+const minutesEl = document.querySelector("[data-minutes]");
+const secondsEl = document.querySelector("[data-seconds]");
 
-const dateInput = document.getElementById("datetime-picker");
-const startBtn = document.getElementById("start-btn");
+let userSelectedDate = null;
+let timerInterval = null;
 
-const daysEl = document.getElementById("days");
-const hoursEl = document.getElementById("hours");
-const minutesEl = document.getElementById("minutes");
-const secondsEl = document.getElementById("seconds");
+startBtn.disabled = true;
 
-let selectedDate = null;
-let countdownInterval = null;
-
-// Takvimi açılabilir yap
-const picker = flatpickr(dateInput, {
+flatpickr(datePicker, {
   enableTime: true,
   time_24hr: true,
-  dateFormat: "Y-m-d H:i",
-  minDate: "today",
-  onChange(selectedDates) {
-    selectedDate = selectedDates[0];
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  onClose(selectedDates) {
+    const selectedDate = selectedDates[0];
+    if (selectedDate <= new Date()) {
+      showToast("warning", "Please choose a date in the future");
+      startBtn.disabled = true;
+    } else {
+      userSelectedDate = selectedDate;
+      startBtn.disabled = false;
+      showToast("success", "Valid date selected! Click 'Başlat' to start");
+    }
   },
 });
 
-// inputa tıklayınca takvim aç
-dateInput.addEventListener("click", () => {
-  picker.open();
-});
-
 startBtn.addEventListener("click", () => {
-  if (!selectedDate) {
-    iziToast.warning({
-      title: "Uyarı",
-      message: "Lütfen bir tarih ve saat seçin!",
-      position: "topCenter",
-    });
-    return;
-  }
-
-  const now = new Date();
-  if (selectedDate <= now) {
-    iziToast.error({
-      title: "Hatalı Zaman",
-      message: "Geçmiş bir tarih seçemezsiniz!",
-      position: "topCenter",
-    });
-    return;
-  }
-
-  iziToast.success({
-    title: "Zamanlayıcı Başladı",
-    message: "Geri sayım başladı 🎯",
-    position: "topCenter",
-  });
-
-  clearInterval(countdownInterval);
-  countdownInterval = setInterval(() => {
-    const now = new Date();
-    const diff = selectedDate - now;
-
-    if (diff <= 0) {
-      clearInterval(countdownInterval);
-      updateTimer(0);
-      iziToast.info({
-        title: "Süre Doldu ⏰",
-        message: "Zamanlayıcı tamamlandı!",
-        position: "topCenter",
-      });
-      return;
-    }
-
-    updateTimer(diff);
-  }, 1000);
+  startBtn.disabled = true;
+  showToast("success", "Timer started!");
+  timerInterval = setInterval(updateTimer, 1000);
+  updateTimer();
 });
 
-function updateTimer(ms) {
-  const sec = Math.floor(ms / 1000) % 60;
-  const min = Math.floor(ms / 1000 / 60) % 60;
-  const hrs = Math.floor(ms / 1000 / 60 / 60) % 24;
-  const day = Math.floor(ms / 1000 / 60 / 60 / 24);
+function updateTimer() {
+  const now = new Date();
+  const delta = userSelectedDate - now;
 
-  daysEl.textContent = String(day).padStart(2, "0");
-  hoursEl.textContent = String(hrs).padStart(2, "0");
-  minutesEl.textContent = String(min).padStart(2, "0");
-  secondsEl.textContent = String(sec).padStart(2, "0");
+  if (delta <= 0) {
+    clearInterval(timerInterval);
+    updateDisplay({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    showToast("success", "Time's up!");
+    return;
+  }
+
+  updateDisplay(convertMs(delta));
+}
+
+function updateDisplay({ days, hours, minutes, seconds }) {
+  daysEl.textContent = addLeadingZero(days);
+  hoursEl.textContent = addLeadingZero(hours);
+  minutesEl.textContent = addLeadingZero(minutes);
+  secondsEl.textContent = addLeadingZero(seconds);
+}
+
+function addLeadingZero(value) {
+  return String(value).padStart(2, "0");
+}
+
+function convertMs(ms) {
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  const days = Math.floor(ms / day);
+  const hours = Math.floor((ms % day) / hour);
+  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+
+  return { days, hours, minutes, seconds };
 }

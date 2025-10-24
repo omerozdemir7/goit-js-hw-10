@@ -6,9 +6,7 @@ import SortCss from 'postcss-sort-media-queries';
 
 export default defineConfig(({ command }) => {
   return {
-    // 🔹 Base: yayınlandığında dosya yolları düzgün çalışsın
-    base: './goit-js-hw-10/',
-
+    base: '/goit-js-hw-10/',  // ✅ repo adınla birebir aynı
     define: {
       [command === 'serve' ? 'global' : '_global']: {},
     },
@@ -40,12 +38,6 @@ export default defineConfig(({ command }) => {
       outDir: '../dist',
       emptyOutDir: true,
     },
-    server: {
-      headers: {
-        // 🔹 CSP gevşetme — flatpickr ve iziToast hata vermesin
-        'Content-Security-Policy': "script-src 'self' 'unsafe-eval';",
-      },
-    },
     plugins: [
       injectHTML(),
       FullReload(['./src/**/**.html']),
@@ -53,13 +45,5 @@ export default defineConfig(({ command }) => {
         sort: 'mobile-first',
       }),
     ],
-
-    // 🔹 Eğer build sırasında hâlâ bulunamaz hatası alırsan
-    resolve: {
-      alias: {
-        flatpickr: 'flatpickr/dist/flatpickr.min.js',
-        izitoast: 'izitoast/dist/js/iziToast.min.js',
-      },
-    },
   };
 });

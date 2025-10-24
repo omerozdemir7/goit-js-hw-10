@@ -1,0 +1,87 @@
+/* ===========================
+   GENEL SAYFA TASARIMI
+=========================== */
+body {
+  margin: 0;
+  padding: 40px 20px;
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(145deg, #f8f9fa, #eef1f5);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Başlık */
+h1 {
+  text-align: center;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 40px;
+  letter-spacing: 1px;
+}
+
+/* ===========================
+   GALERİ STİLİ
+=========================== */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 👈 Her satırda 3 sütun */
+  gap: 24px; /* Kartlar arası boşluk */
+  width: 100%;
+  max-width: 1140px;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Galeri öğesi */
+.gallery-item {
+  overflow: hidden;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover efekti */
+.gallery-item:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* Resim */
+.gallery-image {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-image {
+  transform: scale(1.05);
+}
+
+/* Link */
+.gallery-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===========================
+   RESPONSIVE TASARIM
+=========================== */
+@media (max-width: 992px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr); /* Orta ekran: 2 sütun */
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery {
+    grid-template-columns: 1fr; /* Küçük ekran: 1 sütun */
+  }
+}
